@@ -32,15 +32,19 @@
 - [x] `checkSettingsImpact` action to detect lessons affected by schedule shrink
 - [x] Build and tests pass with 0 errors
 
-## Phase 2: Master data (Next)
-- [ ] Subjects CRUD
-- [ ] Teachers CRUD with availability grid
-- [ ] Rooms CRUD with types & capacity
-- [ ] Classes CRUD
-- [ ] Allocations with workload and period warnings
-- [ ] Load demo data & clear data buttons
+## Phase 2: Master data
+- [x] Subjects CRUD with curated color palette swatches and Theory/Lab tags
+- [x] Teachers CRUD with weekly/daily/consecutive quotas and interactive availability mini-grid
+- [x] Rooms CRUD with Classroom/Lab/Other types and capacity thresholds
+- [x] Classes CRUD with cohort sizes and optional designated home rooms
+- [x] Allocations manager linking Class, Subject, Faculty, periods/week, block size (1 or 2), and room requirements
+- [x] Live workload calculations (`calculateClassSlotTotals`, `calculateTeacherWorkloads`) flagging capacity issues
+- [x] Realistic Demo Seeding: 4 classes, 12 faculty, 8 rooms, 10 subjects (including labs with block size 2)
+- [x] "Clear All Data" button with confirmation modal
+- [x] Unit test suite in `master-calculations.test.ts` passing
+- [x] Production build passes with 0 errors
 
-## Phase 3: Builder and clash engine
+## Phase 3: Builder and clash engine (Next)
 - [ ] Pure scheduling rule functions in `/lib/scheduling` + Vitest tests
 - [ ] Interactive weekly timetable grid
 - [ ] Drag and drop with dnd-kit

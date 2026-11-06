@@ -2,7 +2,8 @@
 
 import React from "react";
 import { motion } from "motion/react";
-import { AlertCircle, Terminal, FileText, Calendar, Sparkles, Sun, Moon } from "lucide-react";
+import { AlertCircle, Terminal, FileText, Calendar, Sun, Moon } from "lucide-react";
+import { AssetImage } from "@/components/ui/asset-image";
 
 export function BentoFeatures() {
   return (
@@ -23,7 +24,7 @@ export function BentoFeatures() {
           transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
           className="md:col-span-2 rounded-2xl border border-line bg-surface p-6 flex flex-col justify-between overflow-hidden relative shadow-sm"
         >
-          <div>
+          <div className="relative z-10">
             <div className="flex items-center gap-2 mb-3">
               <span className="p-2 rounded-lg bg-conflict/10 text-conflict">
                 <AlertCircle className="w-5 h-5" />
@@ -35,7 +36,11 @@ export function BentoFeatures() {
             </p>
           </div>
 
-          <div className="mt-6 space-y-2 font-mono text-xs">
+          <div className="my-4 rounded-xl overflow-hidden border border-line/50 max-h-48">
+            <AssetImage assetKey="feature-clash" className="w-full h-full object-cover" />
+          </div>
+
+          <div className="space-y-2 font-mono text-xs relative z-10">
             <div className="p-3 rounded-xl border border-conflict/40 bg-conflict/5 flex items-center justify-between text-conflict">
               <span>Dr. V. Rao double-booked in Lab 2 & Room 301</span>
               <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-conflict text-white">
@@ -55,7 +60,7 @@ export function BentoFeatures() {
         <motion.div
           whileHover={{ y: -4 }}
           transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-          className="rounded-2xl border border-line bg-surface p-6 flex flex-col justify-between shadow-sm"
+          className="rounded-2xl border border-line bg-surface p-6 flex flex-col justify-between shadow-sm overflow-hidden"
         >
           <div>
             <span className="font-mono text-xs uppercase tracking-wider text-muted">
@@ -67,7 +72,11 @@ export function BentoFeatures() {
             </p>
           </div>
 
-          <div className="mt-6 space-y-3 font-mono text-xs">
+          <div className="my-4 rounded-xl overflow-hidden border border-line/50 max-h-40">
+            <AssetImage assetKey="feature-workload" className="w-full h-full object-cover" />
+          </div>
+
+          <div className="space-y-3 font-mono text-xs">
             <div>
               <div className="flex justify-between text-muted text-[11px] mb-1">
                 <span>Dr. Rao (Networks)</span>
@@ -86,15 +95,6 @@ export function BentoFeatures() {
                 <div className="h-full bg-emerald-500 rounded-full" style={{ width: "100%" }} />
               </div>
             </div>
-            <div>
-              <div className="flex justify-between text-conflict text-[11px] mb-1">
-                <span>Dr. Gupta (Algorithms)</span>
-                <span className="font-bold">18 / 16 hrs (Exceeded)</span>
-              </div>
-              <div className="w-full h-2 rounded-full bg-line overflow-hidden">
-                <div className="h-full bg-conflict rounded-full" style={{ width: "100%" }} />
-              </div>
-            </div>
           </div>
         </motion.div>
 
@@ -102,7 +102,7 @@ export function BentoFeatures() {
         <motion.div
           whileHover={{ y: -4 }}
           transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-          className="rounded-2xl border border-line bg-surface p-6 flex flex-col justify-between shadow-sm"
+          className="rounded-2xl border border-line bg-surface p-6 flex flex-col justify-between shadow-sm overflow-hidden"
         >
           <div>
             <div className="flex items-center gap-2 mb-2">
@@ -116,12 +116,15 @@ export function BentoFeatures() {
             </p>
           </div>
 
-          <div className="mt-4 p-3 rounded-xl bg-ink text-bg font-mono text-[11px] space-y-1.5 leading-relaxed overflow-hidden">
+          <div className="my-4 rounded-xl overflow-hidden border border-line/50 max-h-36">
+            <AssetImage assetKey="feature-generate" className="w-full h-full object-cover" />
+          </div>
+
+          <div className="p-3 rounded-xl bg-ink text-bg font-mono text-[11px] space-y-1.5 leading-relaxed overflow-hidden">
             <div className="text-muted">[0.12s] Running feasibility check...</div>
             <div className="text-emerald-400">✓ Feasible: 120 slots, 114 required</div>
             <div className="text-accent">→ Locking fixed lab double blocks</div>
             <div className="text-muted">[0.84s] 114/114 lessons placed</div>
-            <div className="text-emerald-400 font-bold">100% scheduled • 0 hard clashes</div>
           </div>
         </motion.div>
 
@@ -129,7 +132,7 @@ export function BentoFeatures() {
         <motion.div
           whileHover={{ y: -4 }}
           transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-          className="rounded-2xl border border-line bg-surface p-6 flex flex-col justify-between shadow-sm"
+          className="rounded-2xl border border-line bg-surface p-6 flex flex-col justify-between shadow-sm overflow-hidden"
         >
           <div>
             <span className="font-mono text-xs uppercase tracking-wider text-muted">
@@ -141,18 +144,22 @@ export function BentoFeatures() {
             </p>
           </div>
 
-          <div className="mt-6 flex flex-wrap gap-2">
-            <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-line bg-bg font-mono text-xs font-semibold text-ink shadow-sm">
+          <div className="my-4 rounded-xl overflow-hidden border border-line/50 max-h-36">
+            <AssetImage assetKey="feature-export" className="w-full h-full object-cover" />
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-line bg-bg font-mono text-xs font-semibold text-ink shadow-sm">
               <FileText className="w-4 h-4 text-accent" />
-              <span>.PDF (Landscape A4)</span>
+              <span>.PDF</span>
             </div>
-            <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-line bg-bg font-mono text-xs font-semibold text-ink shadow-sm">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-line bg-bg font-mono text-xs font-semibold text-ink shadow-sm">
               <FileText className="w-4 h-4 text-emerald-600" />
-              <span>.XLSX (Merged Labs)</span>
+              <span>.XLSX</span>
             </div>
-            <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-line bg-bg font-mono text-xs font-semibold text-ink shadow-sm">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-line bg-bg font-mono text-xs font-semibold text-ink shadow-sm">
               <Calendar className="w-4 h-4 text-sky-600" />
-              <span>.ICS (Sync to Google)</span>
+              <span>.ICS</span>
             </div>
           </div>
         </motion.div>
@@ -199,9 +206,9 @@ export function BentoFeatures() {
         <motion.div
           whileHover={{ y: -4 }}
           transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-          className="md:col-span-3 rounded-2xl border border-line bg-surface p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm overflow-hidden"
+          className="md:col-span-3 rounded-2xl border border-line bg-surface p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-8 shadow-sm overflow-hidden"
         >
-          <div className="max-w-md">
+          <div className="max-w-md shrink-0">
             <div className="flex items-center gap-2 mb-2 text-accent">
               <Sun className="w-4 h-4" />
               <Moon className="w-4 h-4" />
@@ -210,26 +217,16 @@ export function BentoFeatures() {
             <h3 className="text-2xl font-bold text-ink">
               Quiet paper cream by day. Obsidian deep ink by night.
             </h3>
-            <p className="text-muted text-sm mt-2">
+            <p className="text-muted text-sm mt-2 leading-relaxed">
               Engineered with WCAG AA contrast tokens, subtle hairline borders, and zero eye fatigue during extended scheduling marathons.
             </p>
           </div>
 
-          <div className="flex items-center gap-4 w-full md:w-auto">
-            <div className="flex-1 md:w-56 p-4 rounded-xl border border-line bg-[#F4F2EC] text-[#121210] shadow-inner">
-              <div className="font-mono text-[10px] text-[#6E6C64]">LIGHT MODE</div>
-              <div className="font-bold text-sm mt-1">#F4F2EC Warm Paper</div>
-              <div className="w-full h-1.5 bg-[#FF5A1F] rounded mt-3" />
-            </div>
-            <div className="flex-1 md:w-56 p-4 rounded-xl border border-[#2A2926] bg-[#0D0D0C] text-[#F3F1EA] shadow-inner">
-              <div className="font-mono text-[10px] text-[#98958A]">DARK MODE</div>
-              <div className="font-bold text-sm mt-1">#0D0D0C Obsidian</div>
-              <div className="w-full h-1.5 bg-[#FF6A33] rounded mt-3" />
-            </div>
+          <div className="w-full md:w-[460px] h-[260px] rounded-xl overflow-hidden border border-line shrink-0 bg-bg/50">
+            <AssetImage assetKey="feature-themes" className="w-full h-full object-cover object-top" />
           </div>
         </motion.div>
       </div>
     </section>
   );
 }
-

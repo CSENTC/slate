@@ -9,49 +9,49 @@ export interface AssetDefinition {
 export const ASSET_MANIFEST: Record<string, AssetDefinition> = {
   // Images
   "hero-campus": {
-    path: "/assets/images/hero-campus.webp",
+    path: "/assets/images/hero-campus.jpg",
     width: 1600,
     height: 1000,
     alt: "Abstract architectural university building facade grid",
   },
   "hero-texture": {
-    path: "/assets/images/hero-texture.webp",
+    path: "/assets/images/hero-texture.png",
     width: 1920,
     height: 1080,
     alt: "Warm paper grain background texture",
   },
   "feature-clash": {
-    path: "/assets/images/feature-clash.webp",
+    path: "/assets/images/feature-clash.png",
     width: 1200,
     height: 800,
     alt: "Overlapping schedule cards depicting conflict detection",
   },
   "feature-workload": {
-    path: "/assets/images/feature-workload.webp",
+    path: "/assets/images/feature-workload.png",
     width: 1200,
     height: 800,
     alt: "Teacher workload distribution bars",
   },
   "feature-generate": {
-    path: "/assets/images/feature-generate.webp",
+    path: "/assets/images/feature-generate.png",
     width: 1200,
     height: 800,
     alt: "Algorithm generating balanced schedule grid",
   },
   "feature-export": {
-    path: "/assets/images/feature-export.webp",
+    path: "/assets/images/feature-export.png",
     width: 1200,
     height: 800,
     alt: "Calendar and spreadsheet export formats",
   },
   "feature-themes": {
-    path: "/assets/images/feature-themes.webp",
+    path: "/assets/images/feature-themes.png",
     width: 1600,
     height: 700,
     alt: "Slate interface in light and dark mode",
   },
   "cta-bg": {
-    path: "/assets/images/cta-bg.webp",
+    path: "/assets/images/cta-bg.png",
     width: 1800,
     height: 900,
     alt: "Architectural blueprint grid background",
@@ -59,7 +59,7 @@ export const ASSET_MANIFEST: Record<string, AssetDefinition> = {
 
   // Illustrations
   "setup-side": {
-    path: "/assets/illustrations/setup-side.webp",
+    path: "/assets/illustrations/setup-side.png",
     width: 900,
     height: 1100,
     alt: "Timetable setup onboarding illustration",
@@ -139,4 +139,3 @@ export const ASSET_MANIFEST: Record<string, AssetDefinition> = {
 };
 
 export type AssetKey = keyof typeof ASSET_MANIFEST;
-

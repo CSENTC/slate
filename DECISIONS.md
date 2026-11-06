@@ -45,3 +45,20 @@ This document records sensible defaults, technical decisions, and architecture c
    - Created multi-step `SetupWizard` with live schedule preview strip updating in real-time as users adjust start times, period lengths, or breaks.
    - Integrated `checkSettingsImpact` action to detect if shortening days or periods will clip or invalidate placed lesson blocks.
 
+## 2026-11-07 - Phase 2: Master Data & Demo Dataset
+
+1. **Relational Data Actions & Invalidation**:
+   - Built full CRUD server actions in `master-data-actions.ts` covering Subjects, Faculty, Rooms, Classes, and Allocations.
+   - Wired Next.js `revalidatePath` to automatically sync cache across master lists, builder views, and allocations.
+
+2. **Availability Mini-Grid & Pure Workload Computation**:
+   - Designed interactive matrix in `teacher-manager.tsx` allowing one-click toggling of unavailable slots per faculty member.
+   - Created pure functions in `master-calculations.ts` to compute:
+     - Total class scheduled periods against total available weekly slots.
+     - Total assigned hours per teacher against weekly maximum limits, flagging over-allocations with amber warning indicators.
+   - Verified via unit test suite in `master-calculations.test.ts`.
+
+3. **Curated Demo Seeding**:
+   - Built atomic transaction `loadDemoData` seeding 4 classes (`CSE-3A`, `CSE-3B`, `ECE-2A`, `MECH-4A`), 12 teachers with realistic quotas & unavailable slots, 8 rooms (classrooms + labs), and 10 subjects.
+   - Seeded 2 lab subjects with consecutive double period block sizes (`blockSize: 2`) targeting laboratory rooms.
+

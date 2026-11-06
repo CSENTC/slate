@@ -12,13 +12,19 @@ import { ScrollLitStatement } from "@/components/landing/scroll-lit-statement";
 import { BentoFeatures } from "@/components/landing/bento-features";
 import { HowItWorks } from "@/components/landing/how-it-works";
 import { ClosingCta } from "@/components/landing/closing-cta";
+import { AssetImage } from "@/components/ui/asset-image";
 
 export default function LandingPage() {
   return (
     <SmoothScrollProvider>
-      <div className="min-h-screen bg-bg text-ink selection:bg-accent/20 selection:text-accent">
+      <div className="relative min-h-screen bg-bg text-ink selection:bg-accent/20 selection:text-accent overflow-x-hidden">
+        {/* Subtle Paper Texture Background */}
+        <div className="absolute inset-0 pointer-events-none opacity-20 dark:opacity-10 mix-blend-multiply dark:mix-blend-screen z-0">
+          <AssetImage assetKey="hero-texture" className="w-full h-full object-cover" priority />
+        </div>
+
         {/* Navigation Bar */}
-        <header className="sticky top-0 z-50 border-b border-line/60 bg-bg/80 backdrop-blur-md px-6 md:px-12 py-3.5 flex items-center justify-between">
+        <header className="sticky top-0 z-50 border-b border-line/60 bg-bg/85 backdrop-blur-md px-6 md:px-12 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <span className="w-7 h-7 rounded-lg bg-accent text-white font-mono font-bold text-sm flex items-center justify-center">
               S
@@ -50,7 +56,7 @@ export default function LandingPage() {
         </header>
 
         {/* Hero Section */}
-        <section className="pt-16 pb-20 px-6 md:px-12 max-w-7xl mx-auto">
+        <section className="relative z-10 pt-16 pb-20 px-6 md:px-12 max-w-7xl mx-auto">
           {/* Top Meta Row */}
           <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-muted mb-8">
             <span>SLATE SYSTEM</span>
@@ -124,14 +130,22 @@ export default function LandingPage() {
               </div>
             </motion.div>
 
-            {/* Right Column: Mini Interactive Grid */}
+            {/* Right Column: Mini Interactive Grid & Campus Facade */}
             <motion.div
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="lg:col-span-7 w-full"
+              className="lg:col-span-7 w-full space-y-4"
             >
               <HeroInteractiveGrid />
+
+              <div className="rounded-2xl overflow-hidden border border-line/60 max-h-48 shadow-sm">
+                <AssetImage
+                  assetKey="hero-campus"
+                  className="w-full h-full object-cover filter brightness-[0.95] dark:brightness-[0.8]"
+                  priority
+                />
+              </div>
             </motion.div>
           </div>
         </section>

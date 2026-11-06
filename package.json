@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "@prisma/cli": "^8.0.0-rc.31",
+    "@tailwindcss/postcss": "^4.3.5",
     "@tailwindcss/turbopack": "^4",
     "@testing-library/react": "^16.3.3",
     "@types/node": "^20",
@@ -41,6 +42,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.4.5",
     "jsdom": "^29.1.1",
+    "postcss": "^8.5.32",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vite": "^8.3.6",

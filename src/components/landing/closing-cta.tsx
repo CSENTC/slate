@@ -3,12 +3,15 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { AssetImage } from "@/components/ui/asset-image";
 
 export function ClosingCta() {
   return (
     <section className="relative overflow-hidden bg-[#121210] text-[#F3F1EA] py-28 px-6 md:px-12 border-t border-line">
-      {/* Background blueprint subtle lines */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(#F3F1EA_1px,transparent_1px)] [background-size:24px_24px]" />
+      {/* Background blueprint subtle graphic image */}
+      <div className="absolute inset-0 opacity-15 pointer-events-none overflow-hidden">
+        <AssetImage assetKey="cta-bg" className="w-full h-full object-cover" />
+      </div>
 
       <div className="relative z-10 max-w-5xl mx-auto flex flex-col items-center text-center">
         <span className="font-mono text-xs uppercase tracking-widest text-[#FF5A1F] font-semibold mb-4">
@@ -49,4 +52,3 @@ export function ClosingCta() {
     </section>
   );
 }
-

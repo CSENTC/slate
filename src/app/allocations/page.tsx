@@ -1,22 +1,54 @@
-"use client";
-
 import React from "react";
 import { AppShell } from "@/components/layout/app-shell";
-import { AssetImage } from "@/components/ui/asset-image";
+import {
+  getAllocations,
+  getClasses,
+  getSubjects,
+  getTeachers,
+} from "@/lib/actions/master-data-actions";
+import { getWorkspace } from "@/lib/actions/workspace-actions";
+import { AllocationManager } from "@/components/masters/allocation-manager";
+import { MasterDataToolbar } from "@/components/masters/master-toolbar";
 
-export default function AllocationsPage() {
+export const dynamic = "force-dynamic";
+
+export default async function AllocationsPage() {
+  const [allocations, classes, subjects, teachers, workspace] = await Promise.all([
+    getAllocations(),
+    getClasses(),
+    getSubjects(),
+    getTeachers(),
+    getWorkspace(),
+  ]);
+
+  const workingDaysCount = workspace?.workingDays.length || 5;
+  const periodsPerDayCount = workspace?.periods.filter((p) => !p.isBreak).length || 7;
+
   return (
-    <AppShell title="Subject & Faculty Allocations">
-      <div className="p-8 flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] text-center">
-        <div className="w-56 h-40 mb-4">
-          <AssetImage assetKey="empty-allocations" className="w-full h-full object-contain" />
+    <AppShell title="Curriculum & Teaching Allocations">
+      <div className="p-6 md:p-8 max-w-6xl mx-auto space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-line">
+          <div>
+            <span className="font-mono text-xs uppercase tracking-wider text-muted">
+              Master Data
+            </span>
+            <h2 className="text-2xl font-bold tracking-tight text-ink mt-1">
+              Curriculum Allocations
+            </h2>
+          </div>
+
+          <MasterDataToolbar />
         </div>
-        <h3 className="font-bold text-ink text-lg">No curriculum allocations mapped</h3>
-        <p className="text-muted text-xs max-w-sm mt-1">
-          Assign teacher workloads, periods per week, block sizes (1 or 2), and required room types.
-        </p>
+
+        <AllocationManager
+          initialAllocations={allocations}
+          classes={classes}
+          subjects={subjects}
+          teachers={teachers}
+          workingDaysCount={workingDaysCount}
+          periodsPerDayCount={periodsPerDayCount}
+        />
       </div>
     </AppShell>
   );
 }
-

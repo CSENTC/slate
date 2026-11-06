@@ -1,22 +1,32 @@
-"use client";
-
 import React from "react";
 import { AppShell } from "@/components/layout/app-shell";
-import { AssetImage } from "@/components/ui/asset-image";
+import { getSubjects } from "@/lib/actions/master-data-actions";
+import { SubjectManager } from "@/components/masters/subject-manager";
+import { MasterDataToolbar } from "@/components/masters/master-toolbar";
 
-export default function SubjectsPage() {
+export const dynamic = "force-dynamic";
+
+export default async function SubjectsPage() {
+  const subjects = await getSubjects();
+
   return (
-    <AppShell title="Subject Catalog">
-      <div className="p-8 flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] text-center">
-        <div className="w-56 h-40 mb-4">
-          <AssetImage assetKey="empty-subjects" className="w-full h-full object-contain" />
+    <AppShell title="Subject Catalog & Curriculum">
+      <div className="p-6 md:p-8 max-w-6xl mx-auto space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-line">
+          <div>
+            <span className="font-mono text-xs uppercase tracking-wider text-muted">
+              Master Data
+            </span>
+            <h2 className="text-2xl font-bold tracking-tight text-ink mt-1">
+              Curriculum Subjects
+            </h2>
+          </div>
+
+          <MasterDataToolbar />
         </div>
-        <h3 className="font-bold text-ink text-lg">No subjects registered yet</h3>
-        <p className="text-muted text-xs max-w-sm mt-1">
-          Theory and lab subjects will be managed here with custom color swatches in Phase 2.
-        </p>
+
+        <SubjectManager initialSubjects={subjects} />
       </div>
     </AppShell>
   );
 }
-
