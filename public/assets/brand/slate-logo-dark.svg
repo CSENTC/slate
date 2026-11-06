@@ -1,0 +1,18 @@
+<!-- Slate logo lockup – dark theme -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 96" role="img" aria-label="Slate">
+  <!-- Mark -->
+  <rect width="96" height="96" rx="22" fill="#FF6A33"/>
+  <rect x="12" y="12" width="20" height="20" rx="4" fill="#F3F1EA"/>
+  <rect x="38" y="12" width="20" height="20" rx="4" fill="#F3F1EA"/>
+  <rect x="64" y="12" width="20" height="20" rx="4" fill="#F3F1EA"/>
+  <rect x="12" y="38" width="20" height="20" rx="4" fill="#F3F1EA"/>
+  <rect x="38" y="38" width="20" height="20" rx="4" fill="#121210"/>
+  <rect x="64" y="38" width="20" height="20" rx="4" fill="#F3F1EA"/>
+  <rect x="12" y="64" width="20" height="20" rx="4" fill="#F3F1EA"/>
+  <rect x="38" y="64" width="20" height="20" rx="4" fill="#F3F1EA"/>
+  <rect x="64" y="64" width="20" height="20" rx="4" fill="#F3F1EA"/>
+  <!-- Wordmark -->
+  <text x="116" y="69" font-family="'Inter Tight', Inter, sans-serif" font-weight="800" font-size="62" letter-spacing="-3" fill="#F3F1EA">Slate</text>
+  <text x="286" y="69" font-family="'Inter Tight', Inter, sans-serif" font-weight="800" font-size="62" fill="#FF6A33">.</text>
+</svg>
+

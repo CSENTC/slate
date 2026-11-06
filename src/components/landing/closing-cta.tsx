@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { AssetImage } from "@/components/ui/asset-image";
+import { Logo } from "@/components/brand/Logo";
 
 export function ClosingCta() {
   return (
@@ -43,8 +44,9 @@ export function ClosingCta() {
         </div>
       </div>
 
-      {/* Cropped Slate Wordmark at bottom */}
-      <div className="relative mt-20 -mb-24 flex justify-center pointer-events-none select-none overflow-hidden">
+      {/* Cropped Slate Wordmark at bottom — mark sits above it */}
+      <div className="relative mt-20 -mb-24 flex flex-col items-center pointer-events-none select-none overflow-hidden">
+        <Logo variant="mark" size={48} className="mb-4 opacity-80" />
         <span className="font-sans font-black text-[clamp(6rem,22vw,22rem)] tracking-tighter leading-none text-[#FF5A1F]/15 uppercase">
           SLATE
         </span>

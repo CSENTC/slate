@@ -10,6 +10,7 @@ import {
 import { saveWorkspaceSettings } from "@/lib/actions/workspace-actions";
 import { ScheduleLiveStrip } from "./schedule-live-strip";
 import { AssetImage } from "@/components/ui/asset-image";
+import { Logo } from "@/components/brand/Logo";
 import {
   Building2,
   Calendar,
@@ -148,12 +149,7 @@ export function SetupWizard({
       <div className="lg:col-span-4 border-r border-line bg-surface/60 p-8 flex flex-col justify-between hidden lg:flex select-none">
         <div>
           <div className="flex items-center gap-2 mb-8">
-            <span className="w-8 h-8 rounded-xl bg-accent text-white font-mono font-bold flex items-center justify-center text-sm">
-              S
-            </span>
-            <span className="font-mono text-xs uppercase tracking-widest font-semibold">
-              Slate Onboarding
-            </span>
+            <Logo variant="lockup" size={40} href="/" />
           </div>
 
           <span className="font-mono text-[11px] text-accent uppercase tracking-wider font-semibold">

@@ -26,10 +26,38 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Slate — Timetables, solved.",
-  description: "A premium, conflict-free timetable builder web app for colleges and universities.",
+  title: {
+    default: "Slate – Timetables, solved.",
+    template: "%s · Slate",
+  },
+  description:
+    "A premium, conflict-free timetable builder for colleges and universities. Build clash-free schedules, manage teacher workloads, and export in seconds.",
   icons: {
-    icon: "/assets/favicon.svg",
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    apple: "/assets/brand/apple-touch-icon.png",
+  },
+  openGraph: {
+    title: "Slate – Timetables, solved.",
+    description:
+      "A premium, conflict-free timetable builder for colleges and universities.",
+    url: "https://slate.vercel.app",
+    siteName: "Slate",
+    images: [
+      {
+        url: "/assets/og/og-image.svg",
+        width: 1200,
+        height: 630,
+        alt: "Slate – Timetables, solved.",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Slate – Timetables, solved.",
+    description:
+      "A premium, conflict-free timetable builder for colleges and universities.",
+    images: ["/assets/og/og-image.svg"],
   },
 };
 

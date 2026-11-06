@@ -3,6 +3,7 @@
 import React from "react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Check, Download, AlertTriangle } from "lucide-react";
+import { Logo } from "@/components/brand/Logo";
 
 interface AppTopBarProps {
   title?: string;
@@ -18,6 +19,8 @@ export function AppTopBar({
   return (
     <header className="h-14 border-b border-line bg-surface/80 backdrop-blur-md px-6 flex items-center justify-between z-30 shrink-0">
       <div className="flex items-center gap-4">
+        {/* Slate mark — visible on narrow screens where the rail is hidden */}
+        <Logo variant="mark" size={22} href="/dashboard" className="md:hidden" />
         <h1 className="text-sm font-bold text-ink tracking-tight">{title}</h1>
 
         {/* Autosave status indicator */}

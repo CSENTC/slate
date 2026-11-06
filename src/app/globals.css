@@ -84,3 +84,20 @@ body {
     animation: none !important;
   }
 }
+
+/* ── Logo hover animation ───────────────────────────────────────────────────── */
+/* Centre cell dims on hover of the wrapping link. Respects reduced-motion. */
+.logo-link .logo-centre-cell {
+  transition: opacity 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.logo-link:hover .logo-centre-cell {
+  opacity: 0.5;
+}
+@media (prefers-reduced-motion: reduce) {
+  .logo-link .logo-centre-cell {
+    transition: none !important;
+  }
+  .logo-link:hover .logo-centre-cell {
+    opacity: 1 !important;
+  }
+}

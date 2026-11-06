@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { ArrowUpRight, Play, ShieldCheck, FileSpreadsheet, Zap } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { Logo } from "@/components/brand/Logo";
 import { SmoothScrollProvider } from "@/components/landing/smooth-scroll-provider";
 import { HeroInteractiveGrid } from "@/components/landing/hero-interactive-grid";
 import { RulesMarquee } from "@/components/landing/rules-marquee";
@@ -25,17 +26,7 @@ export default function LandingPage() {
 
         {/* Navigation Bar */}
         <header className="sticky top-0 z-50 border-b border-line/60 bg-bg/85 backdrop-blur-md px-6 md:px-12 py-3.5 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="w-7 h-7 rounded-lg bg-accent text-white font-mono font-bold text-sm flex items-center justify-center">
-              S
-            </span>
-            <span className="font-mono text-xs font-semibold tracking-wider uppercase text-ink">
-              Slate
-            </span>
-            <span className="hidden sm:inline-block font-mono text-[10px] text-muted border-l border-line pl-3">
-              ACADEMIC TIMETABLE SUITE 2026/27
-            </span>
-          </div>
+          <Logo variant="lockup" size={26} href="/" />
 
           <div className="flex items-center gap-4">
             <Link

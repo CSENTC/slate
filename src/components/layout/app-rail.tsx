@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
@@ -14,6 +13,8 @@ import {
   Settings,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Logo } from "@/components/brand/Logo";
+import Link from "next/link";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -31,14 +32,15 @@ export function AppRail() {
 
   return (
     <aside className="w-16 md:w-20 border-r border-line bg-surface flex flex-col items-center py-6 select-none shrink-0 z-40">
-      {/* Brand Icon */}
-      <Link
-        href="/"
-        className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center text-white font-bold font-mono text-lg mb-8 hover:opacity-90 transition-opacity"
-        title="Slate Home"
-      >
-        S
-      </Link>
+      {/* Brand logo — lockup on wider rail, mark only on narrow */}
+      <div className="mb-8 flex items-center justify-center px-2">
+        <Logo
+          variant="mark"
+          size={36}
+          href="/dashboard"
+          className="block"
+        />
+      </div>
 
       {/* Nav links */}
       <nav className="flex flex-col gap-3 flex-1 w-full px-2">
@@ -76,4 +78,3 @@ export function AppRail() {
     </aside>
   );
 }
-

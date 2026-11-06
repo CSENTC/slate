@@ -7,6 +7,43 @@ export interface AssetDefinition {
 }
 
 export const ASSET_MANIFEST: Record<string, AssetDefinition> = {
+  // ── Brand ─────────────────────────────────────────────────────────────────
+  "slate-mark": {
+    path: "/assets/brand/slate-mark.svg",
+    width: 96,
+    height: 96,
+    alt: "Slate logo mark – orange rounded square with 3×3 cream grid",
+    isVector: true,
+  },
+  "slate-mark-dark": {
+    path: "/assets/brand/slate-mark-dark.svg",
+    width: 96,
+    height: 96,
+    alt: "Slate logo mark – dark theme variant",
+    isVector: true,
+  },
+  "slate-logo-light": {
+    path: "/assets/brand/slate-logo-light.svg",
+    width: 320,
+    height: 96,
+    alt: "Slate logo lockup – light theme",
+    isVector: true,
+  },
+  "slate-logo-dark": {
+    path: "/assets/brand/slate-logo-dark.svg",
+    width: 320,
+    height: 96,
+    alt: "Slate logo lockup – dark theme",
+    isVector: true,
+  },
+  "og-image": {
+    path: "/assets/og/og-image.svg",
+    width: 1200,
+    height: 630,
+    alt: "Slate – Timetables, solved.",
+    isVector: true,
+  },
+
   // Images
   "hero-campus": {
     path: "/assets/images/hero-campus.jpg",
