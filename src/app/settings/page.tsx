@@ -1,7 +1,7 @@
 import React from "react";
 import { AppShell } from "@/components/layout/app-shell";
 import { getWorkspace } from "@/lib/actions/workspace-actions";
-import { SetupWizard } from "@/components/wizard/setup-wizard";
+import { SettingsManagerView } from "@/components/masters/settings-manager-view";
 
 export const dynamic = "force-dynamic";
 
@@ -18,10 +18,10 @@ export default async function SettingsPage() {
         defaultPeriodMinutes: 50,
         breaks: workspace.periods
           .filter((p) => p.isBreak)
-          .map((b, idx) => ({
+          .map((b) => ({
             id: b.id,
             label: b.label,
-            afterPeriod: 4, // default anchor
+            afterPeriod: 4,
             durationMinutes: 45,
           })),
       }
@@ -29,8 +29,8 @@ export default async function SettingsPage() {
 
   return (
     <AppShell title="Institution & Schedule Settings">
-      <div className="p-4 md:p-8 max-w-5xl mx-auto">
-        <SetupWizard initialValues={initialValues} isSettingsMode={true} />
+      <div className="p-6 md:p-8 max-w-5xl mx-auto">
+        <SettingsManagerView initialValues={initialValues} />
       </div>
     </AppShell>
   );
