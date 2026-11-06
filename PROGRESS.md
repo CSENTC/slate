@@ -21,15 +21,18 @@
 - [x] Vitest configuration and smoke test
 - [x] Build passes with 0 errors
 
-## Phase 1: Database and setup wizard (Next)
-- [ ] Prisma schema with PostgreSQL models
-- [ ] `.env.local` guidance & `.env.example`
-- [ ] First-run detection & multi-step Setup Wizard
-- [ ] Working days, periods, start times, overrides, breaks configuration
-- [ ] Live preview strip of schedule
-- [ ] Settings page & conflict-check on configuration shrinkage
+## Phase 1: Database and setup wizard
+- [x] Prisma schema with PostgreSQL models (`Workspace`, `Period`, `Subject`, `Teacher`, `TeacherUnavailability`, `Room`, `ClassGroup`, `Allocation`, `Entry`)
+- [x] Database synchronized with Neon PostgreSQL instance
+- [x] Singleton Prisma client in `src/lib/prisma.ts`
+- [x] Pure schedule computation `generateDaySchedule` with Vitest unit tests
+- [x] First-run onboarding wizard (`/setup`) with 4 sequential steps
+- [x] Live period preview strip with break indicators
+- [x] Settings manager (`/settings`) syncing configurations with transaction-safe period regeneration
+- [x] `checkSettingsImpact` action to detect lessons affected by schedule shrink
+- [x] Build and tests pass with 0 errors
 
-## Phase 2: Master data
+## Phase 2: Master data (Next)
 - [ ] Subjects CRUD
 - [ ] Teachers CRUD with availability grid
 - [ ] Rooms CRUD with types & capacity

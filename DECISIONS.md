@@ -29,3 +29,19 @@ This document records sensible defaults, technical decisions, and architecture c
    - Hand-crafted geometric, architectural SVGs for icons, steps, empty states, and favicon.
    - Fallback dashed placeholder frames rendered for missing WebP images with dev info, and tracked in `ASSETS_NEEDED.md`.
 
+## 2026-11-06 - Phase 1: Database and Setup Wizard
+
+1. **Prisma ORM & PostgreSQL Schema**:
+   - Standardized on stable `prisma` and `@prisma/client` v6.
+   - Defined strict relational models: `Workspace`, `Period`, `Subject`, `Teacher`, `TeacherUnavailability`, `Room`, `ClassGroup`, `Allocation`, `Entry`.
+   - Added database indexes on foreign keys and compound index on `(day, startPeriod)` for real-time timetable slot queries.
+   - Leveraged PostgreSQL transactional updates (`prisma.$transaction`) so updating settings atomically replaces and recalculates period intervals without partial states.
+
+2. **Scheduling Computation Layer**:
+   - Built pure function `generateDaySchedule` in `src/lib/scheduling/setup-schema.ts` to compute sequential slot intervals (`09:00 - 09:50`, etc.) and seamlessly interleave custom duration breaks (Lunch, Assembly) after designated periods.
+   - Added unit test suite in `setup-schedule.test.ts` covering zero-break and multi-break calculations.
+
+3. **Onboarding UX & Impact Audit**:
+   - Created multi-step `SetupWizard` with live schedule preview strip updating in real-time as users adjust start times, period lengths, or breaks.
+   - Integrated `checkSettingsImpact` action to detect if shortening days or periods will clip or invalidate placed lesson blocks.
+

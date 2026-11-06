@@ -1,0 +1,162 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Workspace {
+  id           String   @id @default(cuid())
+  name         String
+  academicYear String
+  workingDays  Int[]    // Array of day numbers, e.g. [1, 2, 3, 4, 5] for Mon-Fri (1=Mon, 7=Sun)
+  setupDone    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  periods      Period[]
+  subjects     Subject[]
+  teachers     Teacher[]
+  rooms        Room[]
+  classes      ClassGroup[]
+}
+
+model Period {
+  id             String    @id @default(cuid())
+  workspaceId    String
+  position       Int       // 1-based order within the day (1, 2, 3...)
+  label          String    // e.g. "Period 1" or "Lunch"
+  startTime      String    // "09:00" (HH:mm)
+  endTime        String    // "10:00" (HH:mm)
+  isBreak        Boolean   @default(false)
+
+  workspace      Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, position])
+}
+
+enum SubjectType {
+  THEORY
+  LAB
+}
+
+model Subject {
+  id          String      @id @default(cuid())
+  workspaceId String
+  name        String
+  code        String
+  type        SubjectType @default(THEORY)
+  colour      String      // Hex color code, e.g. "#FF5A1F"
+
+  workspace   Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  allocations Allocation[]
+
+  @@unique([workspaceId, code])
+  @@index([workspaceId])
+}
+
+model Teacher {
+  id             String                   @id @default(cuid())
+  workspaceId    String
+  name           String
+  code           String                   // Short code, e.g. "VR"
+  maxPerDay      Int                      @default(4)
+  maxPerWeek     Int                      @default(16)
+  maxConsecutive Int                      @default(2)
+
+  workspace      Workspace                @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  unavailability TeacherUnavailability[]
+  allocations    Allocation[]
+
+  @@unique([workspaceId, code])
+  @@index([workspaceId])
+}
+
+model TeacherUnavailability {
+  id             String   @id @default(cuid())
+  teacherId      String
+  day            Int      // 1=Mon, 2=Tue...
+  periodPosition Int      // Position of the period
+
+  teacher        Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+
+  @@unique([teacherId, day, periodPosition])
+  @@index([teacherId])
+}
+
+enum RoomType {
+  CLASSROOM
+  LAB
+  OTHER
+}
+
+model Room {
+  id          String     @id @default(cuid())
+  workspaceId String
+  name        String
+  type        RoomType   @default(CLASSROOM)
+  capacity    Int        @default(40)
+
+  workspace   Workspace  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  entries     Entry[]
+  homeClasses ClassGroup[] @relation("HomeRoom")
+
+  @@unique([workspaceId, name])
+  @@index([workspaceId])
+}
+
+model ClassGroup {
+  id           String       @id @default(cuid())
+  workspaceId  String
+  name         String       // e.g. "CSE-3A"
+  studentCount Int          @default(30)
+  homeRoomId   String?
+
+  workspace    Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  homeRoom     Room?        @relation("HomeRoom", fields: [homeRoomId], references: [id], onDelete: SetNull)
+  allocations  Allocation[]
+
+  @@unique([workspaceId, name])
+  @@index([workspaceId])
+  @@index([homeRoomId])
+}
+
+model Allocation {
+  id             String      @id @default(cuid())
+  classId        String
+  subjectId      String
+  teacherId      String
+  periodsPerWeek Int         // Total periods needed each week
+  blockSize      Int         @default(1) // 1 = single period, 2 = double period block
+  roomType       RoomType    @default(CLASSROOM)
+  maxPerDay      Int?        // Optional constraint on max sessions per day
+
+  class          ClassGroup  @relation(fields: [classId], references: [id], onDelete: Cascade)
+  subject        Subject     @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  teacher        Teacher     @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  entries        Entry[]
+
+  @@index([classId])
+  @@index([subjectId])
+  @@index([teacherId])
+}
+
+model Entry {
+  id           String     @id @default(cuid())
+  allocationId String
+  day          Int        // 1=Mon .. 7=Sun
+  startPeriod  Int        // Starting period position
+  length       Int        @default(1) // Number of consecutive periods (matches allocation blockSize)
+  roomId       String?
+  locked       Boolean    @default(false)
+
+  allocation   Allocation @relation(fields: [allocationId], references: [id], onDelete: Cascade)
+  room         Room?      @relation(fields: [roomId], references: [id], onDelete: SetNull)
+
+  @@index([allocationId])
+  @@index([roomId])
+  @@index([day, startPeriod])
+}
+
