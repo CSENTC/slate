@@ -62,3 +62,23 @@ This document records sensible defaults, technical decisions, and architecture c
    - Built atomic transaction `loadDemoData` seeding 4 classes (`CSE-3A`, `CSE-3B`, `ECE-2A`, `MECH-4A`), 12 teachers with realistic quotas & unavailable slots, 8 rooms (classrooms + labs), and 10 subjects.
    - Seeded 2 lab subjects with consecutive double period block sizes (`blockSize: 2`) targeting laboratory rooms.
 
+## 2026-11-07 - Phase 3: Builder & Clash Engine
+
+1. **Pure Rules Engine Isolation**:
+   - All conflict algorithms in `rules.ts` are pure TypeScript functions taking plain data objects. No dependencies on React, Zustand, or Prisma, enabling testing and worker execution.
+   - Enforced hard clashes (teacher double-booked, room double-booked, class double-booked, teacher unavailable, break overlaps) vs. soft warnings (teacher max per day, max per week, consecutive limits, room capacity).
+
+2. **DND Architecture**:
+   - Leveraged `@dnd-kit/core` with pointer and keyboard sensors. Double-period allocations occupy a single master card in the start period and lock the subsequent period with a continuation placeholder.
+   - Built bidirectional dropzones: tray to grid cell, grid cell to grid cell, and grid cell back to tray unplace dropzone.
+
+3. **Autosave Strategy**:
+   - Debounced to 1500ms following any grid mutation. Runs in a single Prisma transaction (`$transaction`) deleting removed entries and recreating active placements for the workspace.
+
+4. **Multi-View Modes**:
+   - Switching between Class, Teacher, and Room modes preserves all underlying placements while dynamically filtering the visual grid and unplaced tray items to match the selected entity.
+
+5. **Validation Modes**:
+   - Default is Strict (blocks dropping when any hard conflict is triggered). Users can toggle to Warn mode to allow tentative placements with live visual alerts and counter badges in the header toolbar.
+
+

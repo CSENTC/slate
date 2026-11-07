@@ -44,16 +44,22 @@
 - [x] Unit test suite in `master-calculations.test.ts` passing
 - [x] Production build passes with 0 errors
 
-## Phase 3: Builder and clash engine (Next)
-- [ ] Pure scheduling rule functions in `/lib/scheduling` + Vitest tests
-- [ ] Interactive weekly timetable grid
-- [ ] Drag and drop with dnd-kit
-- [ ] Strict vs Warn modes
-- [ ] Issues panel with jump-to-cell highlight
-- [ ] Workload panel
-- [ ] Debounced autosave
+## Phase 3: Builder and clash engine
+- [x] Pure scheduling rule functions in `/lib/scheduling/rules.ts` (Hard clashes: teacher/room/class double-booked, unavailable; Soft issues: max per day, max per week, max consecutive, room capacity)
+- [x] 100% Vitest unit tests in `rules.test.ts` (7 new tests covering single/double blocks, bounds, double bookings, quotas, and viability previews)
+- [x] Reactive Zustand builder store in `builder-store.ts` with full undo/redo stack
+- [x] Server actions in `builder-actions.ts` for database fetching and transaction-safe batch sync to Neon PostgreSQL
+- [x] Interactive weekly timetable grid with breaks shaded as non-droppable rows, and double-period blocks occupying two continuous cells
+- [x] View mode switcher: By Class, By Teacher, By Room with responsive entity dropdown selector
+- [x] Lesson tray with remaining sessions counter (e.g., `x3`) and unplace dropzone
+- [x] Complete drag-and-drop system powered by `@dnd-kit` (tray -> cell, cell -> cell, cell -> tray)
+- [x] Strict mode (prevents dropping on hard clashes) vs. Warn mode (permits with visual alert)
+- [x] Collapsible Audit Issues drawer with jump-to-cell pulsing highlight
+- [x] Bottom Workload Panel summarizing faculty teaching loads, class hours, and room occupancy
+- [x] Debounced autosave (1.5s) with live indicator (`Synced`, `Saving...`, `Unsaved edits`)
+- [x] Build and Vitest test suite pass with 0 errors
 
-## Phase 4: Auto-generate
+## Phase 4: Auto-generate (Next)
 - [ ] Scheduling algorithm in `/lib/scheduling/generate.ts`
 - [ ] Web Worker execution with live progress narration
 - [ ] Feasibility check & outcome report

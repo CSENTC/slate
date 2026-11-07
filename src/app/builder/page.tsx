@@ -1,42 +1,40 @@
-"use client";
-
 import React from "react";
 import { AppShell } from "@/components/layout/app-shell";
-import { AssetImage } from "@/components/ui/asset-image";
-import { Sparkles, Play, ShieldAlert } from "lucide-react";
+import { getBuilderData } from "@/lib/actions/builder-actions";
+import { BuilderCanvas } from "@/components/builder/builder-canvas";
+import Link from "next/link";
+import { Sparkles, ArrowRight } from "lucide-react";
 
-export default function BuilderPage() {
-  return (
-    <AppShell title="Slate Timetable Builder — Class CSE-3A">
-      {/* Small Screen Warning */}
-      <div className="lg:hidden m-6 p-4 rounded-xl border border-warning/40 bg-warning/10 text-ink flex items-start gap-3">
-        <ShieldAlert className="w-5 h-5 text-warning shrink-0 mt-0.5" />
-        <div className="text-xs">
-          <p className="font-semibold">Desktop display recommended</p>
-          <p className="text-muted mt-1">
-            The full weekly conflict grid is optimized for wide screens (1024px+). On smaller screens, you can still view masters and settings.
-          </p>
-        </div>
-      </div>
+export const dynamic = "force-dynamic";
 
-      <div className="p-6 md:p-8 flex flex-col items-center justify-center min-h-[calc(100vh-4rem)]">
-        <div className="max-w-md text-center flex flex-col items-center">
-          <div className="w-56 h-40 mb-6">
-            <AssetImage assetKey="empty-timetable" className="w-full h-full object-contain" />
-          </div>
+export default async function BuilderPage() {
+  const data = await getBuilderData();
 
-          <span className="font-mono text-xs uppercase tracking-wider text-accent font-semibold">
-            Builder Canvas Initialized
-          </span>
-          <h2 className="text-2xl font-bold tracking-tight text-ink mt-2">
-            Ready for Scheduling Engine (Phase 3)
+  if (!data) {
+    return (
+      <AppShell title="Slate Timetable Builder">
+        <div className="flex flex-col items-center justify-center min-h-[70vh] p-8 text-center">
+          <h2 className="text-2xl font-bold tracking-tight text-ink">
+            No Active Workspace Found
           </h2>
-          <p className="text-muted text-xs leading-relaxed mt-2">
-            The design tokens, app rail, top bar, and theme sync are fully active. Next, Phase 1 will connect our PostgreSQL schema and onboarding wizard.
+          <p className="text-muted text-sm max-w-md mt-2">
+            Please run the setup wizard to configure your academic timetable parameters.
           </p>
+          <Link
+            href="/setup"
+            className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-accent text-white font-semibold text-xs hover:opacity-90 transition-opacity"
+          >
+            <span>Launch Setup Wizard</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
-      </div>
+      </AppShell>
+    );
+  }
+
+  return (
+    <AppShell title={`Timetable Builder — ${data.workspace.academicYear}`}>
+      <BuilderCanvas initialData={data} />
     </AppShell>
   );
 }
-
