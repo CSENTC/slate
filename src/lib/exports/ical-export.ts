@@ -155,3 +155,4 @@ export async function exportTimetableIcsZip(
     `timetable-ics-${workspaceName.replace(/\s+/g, "-").toLowerCase()}-${academicYear}.zip`
   );
 }
+

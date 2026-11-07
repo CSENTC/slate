@@ -11,3 +11,4 @@ describe("Phase 5: Export Modules Smoke Test", () => {
     expect(typeof icalExport.exportTimetableIcsZip).toBe("function");
   });
 });
+

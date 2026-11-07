@@ -11,3 +11,4 @@ export function saveAs(blob: Blob, filename: string): void {
   document.body.removeChild(a);
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
+
