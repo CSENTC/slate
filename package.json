@@ -35,7 +35,6 @@
     "zustand": "^5.0.16"
   },
   "devDependencies": {
-    "@prisma/cli": "^8.0.0-rc.31",
     "@tailwindcss/postcss": "^4.3.5",
     "@tailwindcss/turbopack": "^4",
     "@testing-library/react": "^16.3.3",
