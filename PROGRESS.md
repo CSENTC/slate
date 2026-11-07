@@ -59,10 +59,18 @@
 - [x] Debounced autosave (1.5s) with live indicator (`Synced`, `Saving...`, `Unsaved edits`)
 - [x] Build and Vitest test suite pass with 0 errors
 
-## Phase 4: Auto-generate (Next)
-- [ ] Scheduling algorithm in `/lib/scheduling/generate.ts`
-- [ ] Web Worker execution with live progress narration
-- [ ] Feasibility check & outcome report
+## Phase 4: Auto-generate
+- [x] Greedy + constraint-propagation scheduler in `/lib/scheduling/generate.ts`
+  - Sorts allocations hardest-first (block-size 2, most periods, busiest teacher)
+  - Skips hard-clash slots via `checkPlacementViability()`; best-fit room assignment
+  - Preserves locked entries verbatim; records unplaced allocations with reasons
+  - `onProgress` callback for live narration
+- [x] 7 Vitest tests in `generate.test.ts` (empty workspace, single alloc, double-block lab, unavailability, locked, over-constrained, progress callback) — all passing
+- [x] `runAutoGenerate()` server action in `builder-actions.ts` (loads data, runs solver, syncs DB)
+- [x] Auto-Generate button (Sparkles icon) in `BuilderToolbar` with loading state
+- [x] Fullscreen generating overlay + result banner (success / partial / error) in `BuilderCanvas`
+- [x] Dashboard (`/dashboard`) converted to async server component — shows real workspace stats, coverage bar, stat cards, quick-action links
+- [x] Build passes 0 errors · 19 tests passing (5 test files)
 
 ## Phase 5: Exports
 - [ ] PDF export with jspdf & jspdf-autotable
