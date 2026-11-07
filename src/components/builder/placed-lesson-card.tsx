@@ -77,7 +77,8 @@ export function PlacedLessonCard({
             <button
               type="button"
               onClick={onToggleLock}
-              className="p-1 rounded-md hover:bg-bg text-muted hover:text-ink transition-colors"
+              aria-label={lesson.locked ? `Unlock ${lesson.subjectName}` : `Lock ${lesson.subjectName}`}
+              className="p-1 rounded-md hover:bg-bg text-muted hover:text-ink transition-colors focus-visible:ring-1 focus-visible:ring-accent"
               title={lesson.locked ? "Unlock lesson" : "Lock lesson in place"}
             >
               {lesson.locked ? (
@@ -92,7 +93,8 @@ export function PlacedLessonCard({
             <button
               type="button"
               onClick={onUnplace}
-              className="p-1 rounded-md hover:bg-red-500/10 text-muted hover:text-red-500 transition-colors"
+              aria-label={`Unplace ${lesson.subjectName}`}
+              className="p-1 rounded-md hover:bg-red-500/10 text-muted hover:text-red-500 transition-colors focus-visible:ring-1 focus-visible:ring-red-500"
               title="Unplace lesson"
             >
               <X className="w-3 h-3" />

@@ -85,7 +85,14 @@
 - [x] Build passes with 0 errors · 20 unit tests passing (6 test suites)
 
 ## Phase 6: Polish, QA and deploy
-- [ ] Optional passcode gate
-- [ ] Accessibility & keyboard navigation pass
-- [ ] Final deployment guide for Vercel + Neon PostgreSQL
+- [x] Optional passcode gate
+  - Server actions in `src/lib/actions/gate-actions.ts` with 7-day secure cookie
+  - Next.js edge middleware (`src/middleware.ts`) guarding internal paths when `APP_PASSCODE` is configured
+  - Branded access gate screen (`src/app/gate/page.tsx`) with Slate logo lockup
+- [x] Accessibility & keyboard navigation pass
+  - ARIA landmarks, region labels, and accessible names on builder cells & lesson cards
+  - High-visibility keyboard focus rings
+- [x] Final deployment guide for Vercel + Neon PostgreSQL in `README.md`
+- [x] Full test suite (21 unit tests across 7 suites) passing
+- [x] Production build passes with 0 errors
 

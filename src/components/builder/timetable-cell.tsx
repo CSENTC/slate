@@ -66,6 +66,8 @@ export function TimetableCell({
   return (
     <div
       ref={setNodeRef}
+      role="region"
+      aria-label={`Day ${day}, Period ${periodPosition}${lesson ? `: ${lesson.subjectName}` : ": Empty"}`}
       className={cn(
         "relative rounded-xl transition-all duration-150 select-none",
         lesson && lesson.length > 1 ? "h-[8.5rem]" : "h-16",
