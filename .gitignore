@@ -33,7 +33,15 @@ yarn-error.log*
 # env files
 .env*.local
 .env
-!.env.example
+.env.example
+
+# planning & dev notes
+PROGRESS.md
+progress.md
+DECISIONS.md
+decisions.md
+ASSETS_NEEDED.md
+assets_needed.md
 
 # vercel
 .vercel
