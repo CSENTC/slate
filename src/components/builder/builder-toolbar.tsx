@@ -11,12 +11,21 @@ import {
   AlertTriangle,
   ShieldCheck,
   ShieldAlert,
-  Save,
   Check,
+  Sparkles,
+  Loader2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export function BuilderToolbar() {
+interface BuilderToolbarProps {
+  onAutoGenerate?: () => void;
+  isGenerating?: boolean;
+}
+
+export function BuilderToolbar({
+  onAutoGenerate,
+  isGenerating = false,
+}: BuilderToolbarProps) {
   const {
     viewMode,
     setViewMode,
@@ -45,7 +54,6 @@ export function BuilderToolbar() {
     <div className="h-14 border-b border-line bg-surface/90 backdrop-blur-md px-6 flex items-center justify-between gap-4 shrink-0 select-none">
       {/* Left: View Mode Switcher + Entity Selector */}
       <div className="flex items-center gap-3">
-        {/* View Mode Pills */}
         <div className="flex items-center bg-bg p-1 rounded-xl border border-line text-xs font-mono">
           <button
             type="button"
@@ -88,7 +96,6 @@ export function BuilderToolbar() {
           </button>
         </div>
 
-        {/* Selected Entity Dropdown Picker */}
         <div className="relative">
           <select
             value={selectedEntityId || ""}
@@ -117,9 +124,32 @@ export function BuilderToolbar() {
         </div>
       </div>
 
-      {/* Center: Strict vs Warn Toggle & Undo / Redo */}
+      {/* Center: Auto-Generate + Strict/Warn + Undo/Redo */}
       <div className="flex items-center gap-2">
-        {/* Strict / Warn mode switch */}
+        {/* Auto-Generate Button */}
+        {onAutoGenerate && (
+          <button
+            type="button"
+            onClick={onAutoGenerate}
+            disabled={isGenerating}
+            className={cn(
+              "flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all",
+              isGenerating
+                ? "border-accent/40 bg-accent/10 text-accent cursor-wait"
+                : "border-accent bg-accent text-white hover:bg-accent/90 shadow-sm"
+            )}
+            title="Auto-generate a full conflict-free timetable"
+          >
+            {isGenerating ? (
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            ) : (
+              <Sparkles className="w-3.5 h-3.5" />
+            )}
+            <span>{isGenerating ? "Generating…" : "Auto-Generate"}</span>
+          </button>
+        )}
+
+        {/* Strict / Warn mode */}
         <div className="flex items-center gap-1 border border-line bg-bg p-0.5 rounded-lg text-xs font-mono">
           <button
             type="button"
@@ -175,9 +205,8 @@ export function BuilderToolbar() {
         </div>
       </div>
 
-      {/* Right: Autosave status & Issues Counter Button */}
+      {/* Right: Autosave + Issues */}
       <div className="flex items-center gap-3">
-        {/* Autosave status indicator */}
         <div className="flex items-center gap-1.5 text-[11px] font-mono text-muted">
           {isSaving ? (
             <>
@@ -197,7 +226,6 @@ export function BuilderToolbar() {
           )}
         </div>
 
-        {/* Issues Drawer Trigger */}
         <button
           type="button"
           onClick={toggleIssuesDrawer}
@@ -206,15 +234,13 @@ export function BuilderToolbar() {
             hardIssuesCount > 0
               ? "bg-red-500/10 border-red-500/30 text-red-600 dark:text-red-400 hover:bg-red-500/20"
               : softIssuesCount > 0
-              ? "bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20"
-              : "bg-surface border-line text-muted hover:text-ink hover:border-line/80",
+                ? "bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20"
+                : "bg-surface border-line text-muted hover:text-ink hover:border-line/80",
             activeIssuesDrawer && "ring-2 ring-accent"
           )}
         >
           <AlertTriangle className="w-3.5 h-3.5" />
-          <span>
-            {hardIssuesCount + softIssuesCount} Issues
-          </span>
+          <span>{hardIssuesCount + softIssuesCount} Issues</span>
           {hardIssuesCount > 0 && (
             <span className="px-1.5 py-0.2 bg-red-600 text-white rounded-full text-[10px] font-bold">
               {hardIssuesCount}

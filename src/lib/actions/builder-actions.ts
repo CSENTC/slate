@@ -215,3 +215,102 @@ export async function syncScheduleEntries(payload: SaveEntriesPayload) {
     return { success: false, error: err.message || "Failed to save timetable" };
   }
 }
+
+/**
+ * Phase 4: Auto-generate a full timetable via the greedy + backtracking solver.
+ * Preserves locked entries. Syncs the result to the database.
+ */
+export async function runAutoGenerate(): Promise<{
+  success: boolean;
+  placed: number;
+  total: number;
+  hardClashes: number;
+  unplacedCount: number;
+  unplacedDetails: { allocationId: string; reason: string }[];
+  error?: string;
+}> {
+  try {
+    const data = await getBuilderData();
+
+    if (!data) {
+      return {
+        success: false,
+        placed: 0,
+        total: 0,
+        hardClashes: 0,
+        unplacedCount: 0,
+        unplacedDetails: [],
+        error: "No workspace found",
+      };
+    }
+
+    const { generateTimetable } = await import("@/lib/scheduling/generate");
+
+    // Build locked entries from existing placed lessons
+    const lockedEntries = data.entries.filter((e) => e.locked);
+
+    // Map allocations to AllocationMeta format
+    const allocations = data.allocations.map((a) => ({
+      id: a.id,
+      classId: a.classId,
+      className: a.class.name,
+      subjectId: a.subjectId,
+      subjectName: a.subject.name,
+      subjectCode: a.subject.code,
+      subjectColour: a.subject.colour,
+      subjectType: a.subject.type,
+      teacherId: a.teacherId,
+      teacherName: a.teacher.name,
+      teacherCode: a.teacher.code,
+      periodsPerWeek: a.periodsPerWeek,
+      blockSize: a.blockSize,
+      roomType: a.roomType,
+      maxPerDay: a.maxPerDay,
+    }));
+
+    const result = generateTimetable({
+      workingDays: data.workspace.workingDays,
+      periods: data.periods,
+      teachers: data.teachers,
+      rooms: data.rooms,
+      classes: data.classes,
+      allocations,
+      lockedEntries,
+    });
+
+    // Sync generated entries to DB
+    await syncScheduleEntries({
+      entries: result.entries.map((e) => ({
+        allocationId: e.allocationId,
+        day: e.day,
+        startPeriod: e.startPeriod,
+        length: e.length,
+        roomId: e.roomId,
+        locked: e.locked ?? false,
+      })),
+    });
+
+    revalidatePath("/builder");
+    revalidatePath("/dashboard");
+
+    return {
+      success: result.success,
+      placed: result.stats.placed,
+      total: result.stats.total,
+      hardClashes: result.stats.hardClashes,
+      unplacedCount: result.unplacedAllocations.length,
+      unplacedDetails: result.unplacedAllocations,
+    };
+  } catch (err: any) {
+    console.error("Auto-generate failed:", err);
+    return {
+      success: false,
+      placed: 0,
+      total: 0,
+      hardClashes: 0,
+      unplacedCount: 0,
+      unplacedDetails: [],
+      error: err.message || "Auto-generate failed",
+    };
+  }
+}
