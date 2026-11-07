@@ -27,6 +27,7 @@ import { TimetableGrid } from "./timetable-grid";
 import { IssuesPanel } from "./issues-panel";
 import { WorkloadPanel } from "./workload-panel";
 import { PlacedLessonCard } from "./placed-lesson-card";
+import { ExportModal } from "./export-modal";
 import { AlertCircle, CheckCircle2, XCircle } from "lucide-react";
 
 interface BuilderCanvasProps {
@@ -48,6 +49,10 @@ export function BuilderCanvas({ initialData }: BuilderCanvasProps) {
     hasUnsavedChanges,
     setSaving,
     markSaved,
+    periods,
+    classes,
+    teachers,
+    rooms,
   } = useBuilderStore();
 
   const [activeDragItem, setActiveDragItem] = useState<{
@@ -60,6 +65,7 @@ export function BuilderCanvas({ initialData }: BuilderCanvasProps) {
   const [generateBanner, setGenerateBanner] = useState<GenerateBanner | null>(
     null
   );
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
 
   // ── Initialise store from server data ──────────────────────────────────────
   useEffect(() => {
@@ -221,6 +227,7 @@ export function BuilderCanvas({ initialData }: BuilderCanvasProps) {
         <BuilderToolbar
           onAutoGenerate={handleAutoGenerate}
           isGenerating={isGenerating}
+          onExportClick={() => setIsExportModalOpen(true)}
         />
 
         {/* Generate Result Banner */}
@@ -322,6 +329,20 @@ export function BuilderCanvas({ initialData }: BuilderCanvasProps) {
               </div>
             )}
         </DragOverlay>
+
+        {/* Phase 5: Export Modal */}
+        {initialData?.workspace && (
+          <ExportModal
+            isOpen={isExportModalOpen}
+            onClose={() => setIsExportModalOpen(false)}
+            workspace={initialData.workspace}
+            periods={periods}
+            lessons={lessons}
+            classes={classes}
+            teachers={teachers}
+            rooms={rooms}
+          />
+        )}
       </div>
     </DndContext>
   );

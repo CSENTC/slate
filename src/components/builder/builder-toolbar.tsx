@@ -14,17 +14,20 @@ import {
   Check,
   Sparkles,
   Loader2,
+  Download,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface BuilderToolbarProps {
   onAutoGenerate?: () => void;
   isGenerating?: boolean;
+  onExportClick?: () => void;
 }
 
 export function BuilderToolbar({
   onAutoGenerate,
   isGenerating = false,
+  onExportClick,
 }: BuilderToolbarProps) {
   const {
     viewMode,
@@ -205,8 +208,20 @@ export function BuilderToolbar({
         </div>
       </div>
 
-      {/* Right: Autosave + Issues */}
+      {/* Right: Export Button + Autosave + Issues */}
       <div className="flex items-center gap-3">
+        {onExportClick && (
+          <button
+            type="button"
+            onClick={onExportClick}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-line bg-surface hover:border-accent text-ink text-xs font-semibold transition-colors shadow-2xs"
+            title="Export Timetable as PDF, Excel, or iCalendar"
+          >
+            <Download className="w-3.5 h-3.5 text-accent" />
+            <span>Export</span>
+          </button>
+        )}
+
         <div className="flex items-center gap-1.5 text-[11px] font-mono text-muted">
           {isSaving ? (
             <>

@@ -73,9 +73,16 @@
 - [x] Build passes 0 errors · 19 tests passing (5 test files)
 
 ## Phase 5: Exports
-- [ ] PDF export with jspdf & jspdf-autotable
-- [ ] Excel export with exceljs
-- [ ] iCalendar (.ics) export & ZIP bundling
+- [x] PDF export with jspdf & jspdf-autotable (`src/lib/exports/pdf-export.ts`)
+  - A4 landscape publication document with vector Slate logo brand tile header
+  - Per-class schedule tables matching curriculum block colors, breaks, and room numbers
+- [x] Excel export with exceljs (`src/lib/exports/excel-export.ts`)
+  - Multi-sheet workbook (`.xlsx`) with custom styling, headers, and colored fills per class
+- [x] iCalendar (.ics) export & ZIP bundling with jszip (`src/lib/exports/ical-export.ts`)
+  - RFC 5545 compliant recurring weekly calendar feeds
+  - Packaged into ZIP with `/classes`, `/faculty`, and `master_timetable.ics` feeds
+- [x] Export modal in Builder UI (`src/components/builder/export-modal.tsx`)
+- [x] Build passes with 0 errors · 20 unit tests passing (6 test suites)
 
 ## Phase 6: Polish, QA and deploy
 - [ ] Optional passcode gate
