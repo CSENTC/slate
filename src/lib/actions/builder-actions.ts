@@ -20,143 +20,148 @@ export interface SaveEntriesPayload {
  * Workspace, Periods, Classes, Teachers, Rooms, Allocations, and placed Entries.
  */
 export async function getBuilderData() {
-  const workspace = await prisma.workspace.findFirst({
-    include: {
-      periods: {
-        orderBy: { position: "asc" },
-      },
-      classes: {
-        include: {
-          homeRoom: true,
+  try {
+    const workspace = await prisma.workspace.findFirst({
+      include: {
+        periods: {
+          orderBy: { position: "asc" },
         },
-        orderBy: { name: "asc" },
-      },
-      teachers: {
-        include: {
-          unavailability: true,
+        classes: {
+          include: {
+            homeRoom: true,
+          },
+          orderBy: { name: "asc" },
         },
-        orderBy: { name: "asc" },
+        teachers: {
+          include: {
+            unavailability: true,
+          },
+          orderBy: { name: "asc" },
+        },
+        rooms: {
+          orderBy: { name: "asc" },
+        },
       },
-      rooms: {
-        orderBy: { name: "asc" },
-      },
-    },
-  });
+    });
 
-  if (!workspace) {
+    if (!workspace) {
+      return null;
+    }
+
+    // Fetch all allocations with related subject, teacher, class details
+    const allocations = await prisma.allocation.findMany({
+      where: {
+        class: { workspaceId: workspace.id },
+      },
+      include: {
+        subject: true,
+        teacher: true,
+        class: true,
+        entries: {
+          include: {
+            room: true,
+          },
+        },
+      },
+    });
+
+    // Extract all currently placed entries
+    const entries = allocations.flatMap((alloc) =>
+      alloc.entries.map((entry) => ({
+        id: entry.id,
+        allocationId: alloc.id,
+        classId: alloc.classId,
+        className: alloc.class.name,
+        subjectId: alloc.subjectId,
+        subjectName: alloc.subject.name,
+        subjectCode: alloc.subject.code,
+        subjectColour: alloc.subject.colour,
+        teacherId: alloc.teacherId,
+        teacherName: alloc.teacher.name,
+        teacherCode: alloc.teacher.code,
+        roomId: entry.roomId,
+        roomName: entry.room?.name || null,
+        day: entry.day,
+        startPeriod: entry.startPeriod,
+        length: entry.length,
+        locked: entry.locked,
+      }))
+    );
+
+    return {
+      workspace: {
+        id: workspace.id,
+        name: workspace.name,
+        academicYear: workspace.academicYear,
+        workingDays: workspace.workingDays,
+      },
+      periods: workspace.periods.map((p) => ({
+        id: p.id,
+        position: p.position,
+        label: p.label,
+        startTime: p.startTime,
+        endTime: p.endTime,
+        isBreak: p.isBreak,
+      })),
+      classes: workspace.classes.map((c) => ({
+        id: c.id,
+        name: c.name,
+        studentCount: c.studentCount,
+        homeRoomId: c.homeRoomId,
+        homeRoomName: c.homeRoom?.name || null,
+      })),
+      teachers: workspace.teachers.map((t) => ({
+        id: t.id,
+        name: t.name,
+        code: t.code,
+        maxPerDay: t.maxPerDay,
+        maxPerWeek: t.maxPerWeek,
+        maxConsecutive: t.maxConsecutive,
+        unavailability: t.unavailability.map((u) => ({
+          day: u.day,
+          periodPosition: u.periodPosition,
+        })),
+      })),
+      rooms: workspace.rooms.map((r) => ({
+        id: r.id,
+        name: r.name,
+        type: r.type,
+        capacity: r.capacity,
+      })),
+      allocations: allocations.map((a) => ({
+        id: a.id,
+        classId: a.classId,
+        subjectId: a.subjectId,
+        teacherId: a.teacherId,
+        periodsPerWeek: a.periodsPerWeek,
+        blockSize: a.blockSize,
+        roomType: a.roomType,
+        maxPerDay: a.maxPerDay,
+        subject: {
+          id: a.subject.id,
+          name: a.subject.name,
+          code: a.subject.code,
+          colour: a.subject.colour,
+          type: a.subject.type,
+        },
+        teacher: {
+          id: a.teacher.id,
+          name: a.teacher.name,
+          code: a.teacher.code,
+        },
+        class: {
+          id: a.class.id,
+          name: a.class.name,
+          studentCount: a.class.studentCount,
+        },
+        placedCount: a.entries.reduce((acc, e) => acc + e.length, 0),
+      })),
+      entries,
+    };
+  } catch (err) {
+    console.error("Error fetching builder data:", err);
     return null;
   }
-
-  // Fetch all allocations with related subject, teacher, class details
-  const allocations = await prisma.allocation.findMany({
-    where: {
-      class: { workspaceId: workspace.id },
-    },
-    include: {
-      subject: true,
-      teacher: true,
-      class: true,
-      entries: {
-        include: {
-          room: true,
-        },
-      },
-    },
-  });
-
-  // Extract all currently placed entries
-  const entries = allocations.flatMap((alloc) =>
-    alloc.entries.map((entry) => ({
-      id: entry.id,
-      allocationId: alloc.id,
-      classId: alloc.classId,
-      className: alloc.class.name,
-      subjectId: alloc.subjectId,
-      subjectName: alloc.subject.name,
-      subjectCode: alloc.subject.code,
-      subjectColour: alloc.subject.colour,
-      teacherId: alloc.teacherId,
-      teacherName: alloc.teacher.name,
-      teacherCode: alloc.teacher.code,
-      roomId: entry.roomId,
-      roomName: entry.room?.name || null,
-      day: entry.day,
-      startPeriod: entry.startPeriod,
-      length: entry.length,
-      locked: entry.locked,
-    }))
-  );
-
-  return {
-    workspace: {
-      id: workspace.id,
-      name: workspace.name,
-      academicYear: workspace.academicYear,
-      workingDays: workspace.workingDays,
-    },
-    periods: workspace.periods.map((p) => ({
-      id: p.id,
-      position: p.position,
-      label: p.label,
-      startTime: p.startTime,
-      endTime: p.endTime,
-      isBreak: p.isBreak,
-    })),
-    classes: workspace.classes.map((c) => ({
-      id: c.id,
-      name: c.name,
-      studentCount: c.studentCount,
-      homeRoomId: c.homeRoomId,
-      homeRoomName: c.homeRoom?.name || null,
-    })),
-    teachers: workspace.teachers.map((t) => ({
-      id: t.id,
-      name: t.name,
-      code: t.code,
-      maxPerDay: t.maxPerDay,
-      maxPerWeek: t.maxPerWeek,
-      maxConsecutive: t.maxConsecutive,
-      unavailability: t.unavailability.map((u) => ({
-        day: u.day,
-        periodPosition: u.periodPosition,
-      })),
-    })),
-    rooms: workspace.rooms.map((r) => ({
-      id: r.id,
-      name: r.name,
-      type: r.type,
-      capacity: r.capacity,
-    })),
-    allocations: allocations.map((a) => ({
-      id: a.id,
-      classId: a.classId,
-      subjectId: a.subjectId,
-      teacherId: a.teacherId,
-      periodsPerWeek: a.periodsPerWeek,
-      blockSize: a.blockSize,
-      roomType: a.roomType,
-      maxPerDay: a.maxPerDay,
-      subject: {
-        id: a.subject.id,
-        name: a.subject.name,
-        code: a.subject.code,
-        colour: a.subject.colour,
-        type: a.subject.type,
-      },
-      teacher: {
-        id: a.teacher.id,
-        name: a.teacher.name,
-        code: a.teacher.code,
-      },
-      class: {
-        id: a.class.id,
-        name: a.class.name,
-        studentCount: a.class.studentCount,
-      },
-      placedCount: a.entries.reduce((acc, e) => acc + e.length, 0),
-    })),
-    entries,
-  };
 }
 
 /**

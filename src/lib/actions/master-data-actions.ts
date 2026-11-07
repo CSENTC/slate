@@ -6,12 +6,17 @@ import { revalidatePath } from "next/cache";
 // --- SUBJECTS ---
 
 export async function getSubjects() {
-  const workspace = await prisma.workspace.findFirst();
-  if (!workspace) return [];
-  return prisma.subject.findMany({
-    where: { workspaceId: workspace.id },
-    orderBy: { name: "asc" },
-  });
+  try {
+    const workspace = await prisma.workspace.findFirst();
+    if (!workspace) return [];
+    return await prisma.subject.findMany({
+      where: { workspaceId: workspace.id },
+      orderBy: { name: "asc" },
+    });
+  } catch (err) {
+    console.error("Failed to query subjects:", err);
+    return [];
+  }
 }
 
 export async function upsertSubject(data: {
@@ -67,16 +72,21 @@ export async function deleteSubject(id: string) {
 // --- TEACHERS ---
 
 export async function getTeachers() {
-  const workspace = await prisma.workspace.findFirst();
-  if (!workspace) return [];
-  return prisma.teacher.findMany({
-    where: { workspaceId: workspace.id },
-    include: {
-      unavailability: true,
-      allocations: true,
-    },
-    orderBy: { name: "asc" },
-  });
+  try {
+    const workspace = await prisma.workspace.findFirst();
+    if (!workspace) return [];
+    return await prisma.teacher.findMany({
+      where: { workspaceId: workspace.id },
+      include: {
+        unavailability: true,
+        allocations: true,
+      },
+      orderBy: { name: "asc" },
+    });
+  } catch (err) {
+    console.error("Failed to query teachers:", err);
+    return [];
+  }
 }
 
 export async function upsertTeacher(data: {
@@ -151,12 +161,17 @@ export async function deleteTeacher(id: string) {
 // --- ROOMS ---
 
 export async function getRooms() {
-  const workspace = await prisma.workspace.findFirst();
-  if (!workspace) return [];
-  return prisma.room.findMany({
-    where: { workspaceId: workspace.id },
-    orderBy: { name: "asc" },
-  });
+  try {
+    const workspace = await prisma.workspace.findFirst();
+    if (!workspace) return [];
+    return await prisma.room.findMany({
+      where: { workspaceId: workspace.id },
+      orderBy: { name: "asc" },
+    });
+  } catch (err) {
+    console.error("Failed to query rooms:", err);
+    return [];
+  }
 }
 
 export async function upsertRoom(data: {
@@ -208,16 +223,21 @@ export async function deleteRoom(id: string) {
 // --- CLASSES ---
 
 export async function getClasses() {
-  const workspace = await prisma.workspace.findFirst();
-  if (!workspace) return [];
-  return prisma.classGroup.findMany({
-    where: { workspaceId: workspace.id },
-    include: {
-      homeRoom: true,
-      allocations: true,
-    },
-    orderBy: { name: "asc" },
-  });
+  try {
+    const workspace = await prisma.workspace.findFirst();
+    if (!workspace) return [];
+    return await prisma.classGroup.findMany({
+      where: { workspaceId: workspace.id },
+      include: {
+        homeRoom: true,
+        allocations: true,
+      },
+      orderBy: { name: "asc" },
+    });
+  } catch (err) {
+    console.error("Failed to query classes:", err);
+    return [];
+  }
 }
 
 export async function upsertClass(data: {
@@ -269,20 +289,25 @@ export async function deleteClass(id: string) {
 // --- ALLOCATIONS ---
 
 export async function getAllocations() {
-  const workspace = await prisma.workspace.findFirst();
-  if (!workspace) return [];
-  return prisma.allocation.findMany({
-    where: {
-      class: { workspaceId: workspace.id },
-    },
-    include: {
-      class: true,
-      subject: true,
-      teacher: true,
-      entries: true,
-    },
-    orderBy: [{ class: { name: "asc" } }, { subject: { name: "asc" } }],
-  });
+  try {
+    const workspace = await prisma.workspace.findFirst();
+    if (!workspace) return [];
+    return await prisma.allocation.findMany({
+      where: {
+        class: { workspaceId: workspace.id },
+      },
+      include: {
+        class: true,
+        subject: true,
+        teacher: true,
+        entries: true,
+      },
+      orderBy: [{ class: { name: "asc" } }, { subject: { name: "asc" } }],
+    });
+  } catch (err) {
+    console.error("Failed to query allocations:", err);
+    return [];
+  }
 }
 
 export async function upsertAllocation(data: {
